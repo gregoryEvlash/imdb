@@ -1,4 +1,4 @@
-import com.lunatech.imdb.Dependencies._
+import com.imdb.Dependencies._
 
 lazy val root = (project in file("."))
   .settings(

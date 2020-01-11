@@ -1,4 +1,4 @@
-package com.lunatech.imdb
+package com.imdb
 
 import sbt._
 
@@ -8,6 +8,7 @@ object Dependencies {
   val scalatest = "org.scalatest" %% "scalatest" % "3.0.1" % "test"
 
   val cats = "org.typelevel" %% "cats-core" % "2.0.0"
+  val catsEffect = "org.typelevel" %% "cats-effect" % "2.0.0"
 
   val log = Seq(
     "ch.qos.logback" % "logback-classic" % "1.2.3",
@@ -18,19 +19,27 @@ object Dependencies {
     "io.circe" %% "circe-core" % "0.12.3",
     "io.circe" %% "circe-generic" % "0.12.3",
     "io.circe" %% "circe-parser" % "0.12.3",
-    "io.circe" %% "circe-generic-extras" % "0.12.2",
     "de.heikoseeberger" %% "akka-http-circe" % "1.30.0",
     "io.circe" %% "circe-magnolia-derivation" % "0.4.0"
   )
 
-  val csv = "com.github.tototoshi" %% "scala-csv" % "1.3.6"
-  val tsv = "net.tixxit" %% "delimited-core" % "0.9.3"
-
   val akka = Seq(
     "com.typesafe.akka" %% "akka-actor" % "2.6.1",
     "com.typesafe.akka" %% "akka-http" % "10.1.11",
-    "com.typesafe.akka" %% "akka-testkit" % "2.6.1" % Test
+    "com.typesafe.akka" %% "akka-testkit" % "2.6.1" % Test,
+    "com.typesafe.akka" %% "akka-stream" % "2.6.1",
+    "com.lightbend.akka" %% "akka-stream-alpakka-csv" % "1.1.2"
   )
 
-  val all = Seq(jodaTime, scalatest, cats, csv, tsv) ++ log ++ akka ++ json
+  val database = Seq(
+//    "mysql" % "mysql-connector-java" % "8.0.18"
+    "com.h2database" % "h2" % "1.4.200"
+  )
+
+  val slick = Seq(
+    "com.typesafe.slick" %% "slick" % "3.2.3",
+    "com.typesafe.slick" %% "slick-hikaricp" % "3.2.3"
+  )
+
+  val all = Seq(jodaTime, scalatest, cats, catsEffect) ++ log ++ akka ++ json ++ database ++ slick
 }
