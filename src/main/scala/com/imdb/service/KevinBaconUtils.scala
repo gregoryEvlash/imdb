@@ -2,8 +2,7 @@ package com.imdb.service
 
 import java.util.concurrent.{ConcurrentHashMap, ConcurrentLinkedQueue}
 
-import cats.effect.ConcurrentEffect
-import com.imdb.models.domain.{IMDBServiceResponse, PersonNotFount, SixDegreesResult}
+import com.imdb.models.domain.{IMDBServiceResponse, PersonUnreachable, SixDegreesResult}
 import com.imdb.models.imdb.NCONST
 
 import scala.annotation.tailrec
@@ -18,7 +17,13 @@ trait KevinBaconUtils[F[_]] {
   type Q = ConcurrentLinkedQueue[String]
 
 
-  def found(degree: Int): IMDBServiceResponse = Right(SixDegreesResult(degree))
+  def found(degree: Int, target: String): IMDBServiceResponse = {
+    if (degree < 0)
+      Left(PersonUnreachable(target))
+    else
+      Right(SixDegreesResult(degree))
+  }
+
   def nextDegreeLevel(n: Int): Int = n + 1
 
   @tailrec

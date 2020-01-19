@@ -42,15 +42,16 @@ class DataLoaderService[F[_]](dataLoaderConf: DataLoaderConf, db: DBCore[F])
   def uploadFilesData(args: Array[String]): F[Unit] = {
     val params = argsToParamMap(args)
     if (params(doUpload) != "-1") {
+
       for {
         _ <- params.get(titleRating).map(uploadData[TitleRating]).getOrElse(F.unit)
-        _ = logger.info(s"$titleRating was uploaded")
+        _ <- F.delay(logger.info(s"$titleRating was uploaded"))
         _ <- params.get(nameBasic).map(uploadData[NameBasic]).getOrElse(F.unit)
-        _ = logger.info(s"$nameBasic was uploaded")
+        _ <- F.delay(logger.info(s"$nameBasic was uploaded"))
         _ <- params.get(titleBasic).map(uploadData[TitleBasic]).getOrElse(F.unit)
-        _ = logger.info(s"$titleBasic was uploaded")
+        _ <- F.delay(logger.info(s"$titleBasic was uploaded"))
         _ <- params.get(titlePrincipal).map(uploadData[TitlePrincipal]).getOrElse(F.unit)
-        _ = logger.info(s"$titlePrincipal was uploaded")
+        _ <- F.delay(logger.info(s"$titlePrincipal was uploaded"))
       } yield ()
     }
     else F.unit

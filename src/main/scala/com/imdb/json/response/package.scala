@@ -2,6 +2,7 @@ package com.imdb.json
 
 import com.imdb.models.domain._
 import io.circe.{Encoder, Json}
+import io.circe.generic
 import io.circe.generic.semiauto._
 
 package object response {
@@ -27,13 +28,17 @@ package object response {
   implicit lazy val sixDegreesResultEncoder: Encoder[SixDegreesResult] =
     deriveEncoder[SixDegreesResult]
 
-  implicit val personNotFountEncoder: Encoder[PersonNotFount] =
-    deriveEncoder[PersonNotFount]
+  implicit val personNotFountEncoder: Encoder[PersonNotFount] = deriveEncoder[PersonNotFount]
+
+  implicit val personUnreachableEncoder: Encoder[PersonUnreachable] =  x =>
+    Json.fromString(s"$x cant be reached less than 6 degree")
+
   implicit val customErrorEncoder: Encoder[CustomError] = deriveEncoder[CustomError]
 
   implicit val IMDBServiceErrorEncoder: Encoder[IMDBServiceError] = {
-    case x: PersonNotFount => personNotFountEncoder.apply(x)
-    case x: CustomError    => customErrorEncoder.apply(x)
+    case x: PersonNotFount    => personNotFountEncoder.apply(x)
+    case x: PersonUnreachable => personUnreachableEncoder.apply(x)
+    case x: CustomError       => customErrorEncoder.apply(x)
   }
 
   implicit val IMDBServiceResultEncoder: Encoder[IMDBServiceResult] = {

@@ -22,7 +22,7 @@ nameBasic       /home/user/data/name.basics.tsv
 So the full run command will be like:
 
 The more memory the better. In this case it takes about 25 minutes
-"sbt -J-Xmx9G -J-Xms7G run upload titleRating /home/user/data/title.ratings.tsv titlePrincipal /home/user/data/title.principals.tsv titleBasic /home/user/data/title.basics.tsv nameBasic /home/user/data/name.basics.tsv"
+sbt -J-Xmx9G -J-Xms7G "run upload titleRating /home/user/data/title.ratings.tsv titlePrincipal /home/user/data/title.principals.tsv titleBasic /home/user/data/title.basics.tsv nameBasic /home/user/data/name.basics.tsv;"
 
 ### In order to run project:
 

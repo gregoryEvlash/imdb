@@ -38,17 +38,10 @@ package object dao {
                             numVotes: Long)
       extends DAO
 
-  case class NameTitleDAO(nconst: NCONST, tconst: TCONST) extends DAO
-
   object DAO {
     def fromEntity(e: TitleRating): TitleRatingDAO = {
       import e._
       TitleRatingDAO(tconst, averageRating, numVotes)
-    }
-
-    def fromEntity(e: NameTitle): NameTitleDAO = {
-      import e._
-      NameTitleDAO(tconst, nconst)
     }
 
     def fromEntity(e: TitlePrincipal): TitlePrincipalDAO = {

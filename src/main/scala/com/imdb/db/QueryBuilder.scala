@@ -18,7 +18,7 @@ class QueryBuilder[F[_]](db: DBCore[F])(
   type TQuery = Query[Rep[TCONST], TCONST, Seq]
 
   def findActorByName(name: String): FixedSqlStreamingAction[Seq[NameBasicDAO], NameBasicDAO, Effect.Read] =
-    nameBasic.filter(_.primaryName === name).result // perhaps like
+    nameBasic.filter(_.primaryName === name).result
 
   def colleagues(nconsts: Seq[NCONST]): FixedSqlStreamingAction[Seq[NCONST], NCONST, Effect.Read] =
     titlePrincipals
@@ -68,7 +68,7 @@ class QueryBuilder[F[_]](db: DBCore[F])(
       .drop(page.offset)
       .take(page.limit)
 
-  def filmsByIdsQ(ids: Seq[TCONST]) =
+  def filmsByIdsQ(ids: Seq[TCONST]): Query[TitleBasicTable, TitleBasicDAO, Seq] =
     titleBasic
       .filter(_.tconst inSet ids)
 

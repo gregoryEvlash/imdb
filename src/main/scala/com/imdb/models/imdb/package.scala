@@ -47,5 +47,4 @@ package object imdb {
                         , knownForTitles: String //  titles the person is known for
                       ) extends DomainEntity
 
-  case class NameTitle(nconst: NCONST, tconst: TCONST) extends DomainEntity
 }

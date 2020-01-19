@@ -12,13 +12,11 @@ import slick.jdbc.H2Profile.api._
 import scala.concurrent.ExecutionContext
 
 class SearchService[F[_]](db: DBCore[F], builder: QueryBuilder[F])(
-  implicit F: ConcurrentEffect[F],
-  ec: ExecutionContext
-) extends SearchServiceUtil
+  implicit F: ConcurrentEffect[F], ec: ExecutionContext)
+  extends SearchServiceUtil
     with LazyLogging {
 
-  def defaultSearch(params: collection.immutable.Map[String, String],
-                    page: Page): F[IMDBServiceResponse] = {
+  def defaultSearch(params: collection.immutable.Map[String, String], page: Page): F[IMDBServiceResponse] = {
 
     val query = builder.buildQueryByParams(params)
     val result = for {
@@ -35,7 +33,7 @@ class SearchService[F[_]](db: DBCore[F], builder: QueryBuilder[F])(
 
   }
 
-  private def getFilmsInfo(ratings: Seq[TitleRatingDAO]): F[Seq[Film]] = {
+  private def getFilmsInfo(ratings: Seq[TitleRatingDAO]): F[Seq[Film]] =
     db.run(builder.filmsByIdsQ(ratings.map(_.tconst)).result)
       .map { films =>
         for {
@@ -46,7 +44,6 @@ class SearchService[F[_]](db: DBCore[F], builder: QueryBuilder[F])(
         }
       }
       .map(convertFilmDataToEntity)
-  }
 
   private def getParticipantsInfo(films: Seq[TCONST]): F[Seq[PersonInfo]] = {
     val principalsQuery = builder.castByFilmsQuery(films)
@@ -54,13 +51,12 @@ class SearchService[F[_]](db: DBCore[F], builder: QueryBuilder[F])(
       .map(convertCastDataToEntity)
   }
 
-  private def withErrorHandling(f: F[IMDBServiceResponse]): F[IMDBServiceResponse] = {
+  private def withErrorHandling(f: F[IMDBServiceResponse]): F[IMDBServiceResponse] =
     f.recover {
       case t =>
         logger.error(t.getMessage)
         Left(CustomError("There were internal error"))
     }
-  }
 }
 
 object SearchService {

@@ -1,37 +1,36 @@
 package com.imdb.service
 
-import java.util.concurrent.{ConcurrentHashMap, ConcurrentLinkedQueue}
-
 import cats.effect.ConcurrentEffect
-import cats.effect.concurrent.{MVar, Ref}
+import cats.effect.concurrent.Ref
 import cats.implicits._
 import com.imdb.db.{DBCore, QueryBuilder}
-import com.imdb.models.domain.{IMDBServiceResponse, PersonNotFount, SixDegreesResult}
+import com.imdb.models.domain.{IMDBServiceResponse, PersonNotFount}
 import com.imdb.models.imdb.NCONST
 import com.typesafe.scalalogging.LazyLogging
-import org.joda.time.DateTime
 
-import scala.annotation.tailrec
 import scala.collection.JavaConverters._
 import scala.concurrent.ExecutionContext
+
+/*
+  I agree with you that this impl and code little bit overcomplicated, and should be at least refactored.
+  But i already tired and have no more time
+ */
 
 class KevinBaconService[F[_]](db: DBCore[F], builder: QueryBuilder[F])(
   implicit ec: ExecutionContext, F: ConcurrentEffect[F]
 ) extends SearchServiceUtil
-    with LazyLogging with KevinBaconUtils[F[_]] {
+    with LazyLogging with KevinBaconUtils[F] {
 
   val visited: Ref[F, Visited] = Ref.unsafe(new Visited())
   val q: Ref[F, Q] = Ref.unsafe(new Q())
-  val targetF: F[MVar[F, String]] = MVar.of[F, String]("")
 
   def search(target: String): F[IMDBServiceResponse] = {
     val initDegreeLevel = 0
     for{
-//      _               <- targetF.map(_.put(target))
       kevinColleagues <- findColleagues(Seq(kevinBaconId))
       result          <- checkIfContainsOtherwiseToQ(initDegreeLevel, target, kevinColleagues)(
         startProcessNewLayer(nextDegreeLevel(initDegreeLevel), target))
-    } yield found(result)
+    } yield found(result, target)
   }
 
   def sixDegreesSearch(actorName: String): F[IMDBServiceResponse] =
@@ -51,7 +50,7 @@ class KevinBaconService[F[_]](db: DBCore[F], builder: QueryBuilder[F])(
    */
   private def checkOnLeftData(queue: Q, degree: Int)(orElse: => F[Int]): F[Int] = {
     if(queue.isEmpty || degree > 6)
-      F.pure(notFoundDegree)  // if target not found -> unreachable
+      F.pure(notFoundDegree)
     else
       orElse
   }

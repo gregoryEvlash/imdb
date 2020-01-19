@@ -19,14 +19,14 @@ package object domain {
 
   case class PersonNotFount(name: String) extends IMDBServiceError
   case class CustomError(message: String) extends IMDBServiceError
+  case class PersonUnreachable(name: String) extends IMDBServiceError
 
   case class Film(filmTconst: TCONST,
                   filmPrimaryTitle: String,
                   filmOriginalTitle: String,
                   filmStartYear: String,
                   averageRating: Double,
-                  genre: String
-                 )
+                  genre: String)
 
   case class PersonInfo(tconst: TCONST,
                         nconst: NCONST,

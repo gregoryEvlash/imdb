@@ -5,8 +5,7 @@ import com.imdb.models.domain.{Film, PersonInfo, Product}
 
 trait SearchServiceUtil {
 
-  protected def convertToPersonInfo(person: NameBasicDAO,
-                                    role: TitlePrincipalDAO): PersonInfo =
+  protected def convertToPersonInfo(person: NameBasicDAO, role: TitlePrincipalDAO): PersonInfo =
     PersonInfo(
       role.tconst,
       person.nconst,
@@ -15,8 +14,7 @@ trait SearchServiceUtil {
       role.job.getOrElse("Undefined")
     )
 
-  protected def convertToFilm(titleBasic: TitleBasicDAO,
-                              rating: TitleRatingDAO): Film =
+  protected def convertToFilm(titleBasic: TitleBasicDAO, rating: TitleRatingDAO): Film =
     Film(
       titleBasic.tconst,
       titleBasic.primaryTitle,
@@ -26,8 +24,7 @@ trait SearchServiceUtil {
       titleBasic.genres
     )
 
-  protected def convertToFilmInfo(films: Seq[Film],
-                                  cast: Seq[PersonInfo]): Seq[Product] = {
+  protected def convertToFilmInfo(films: Seq[Film], cast: Seq[PersonInfo]): Seq[Product] = {
     val filmPersonMap = cast.groupBy(_.tconst)
 
     films.map { film =>
@@ -43,29 +40,12 @@ trait SearchServiceUtil {
     }
   }
 
-  protected def convertFilmDataToEntity(
-    films: Seq[(TitleRatingDAO, TitleBasicDAO)]
-  ): Seq[Film] = {
+  protected def convertFilmDataToEntity(films: Seq[(TitleRatingDAO, TitleBasicDAO)]): Seq[Film] =
     films.map { case (rating, film) => convertToFilm(film, rating) }
-  }
 
-  protected def convertCastDataToEntity(
-    participants: Seq[(TitlePrincipalDAO, NameBasicDAO)]
-  ): Seq[PersonInfo] = {
+  protected def convertCastDataToEntity(participants: Seq[(TitlePrincipalDAO, NameBasicDAO)]): Seq[PersonInfo] =
     participants.map {
       case (role, info) => convertToPersonInfo(info, role)
     }
-  }
-  protected def convertCastDataToEntity2(
-    principals: Seq[TitlePrincipalDAO],
-    info: Seq[NameBasicDAO]
-  ): Seq[PersonInfo] = {
-
-    principals.flatMap { p =>
-      info
-        .find(_.nconst == p.nconst)
-        .map(convertToPersonInfo(_, p))
-    }
-  }
 
 }
