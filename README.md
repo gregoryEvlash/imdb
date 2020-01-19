@@ -10,7 +10,7 @@ Application uses H2 as database (possible to store data in file or memory), its 
 At first you need to upload the data. For this application i used 4 data files
 title.ratings.tsv, title.principals.tsv, title.basics.tsv, name.basics.tsv
 
-Parsing and uploading is very expensive operation. You need to provide a lot of memory and cores, besides it might take for 1 hour to init all data. On disk H2 data file take about 60 GB. 
+Parsing and uploading is very expensive operation. You need to provide a lot of memory and cores, besides it might take for 1 hour to init all data. On disk H2 data file take about 160 GB. (sorry, i dont know why H2 make such huge file, code base allows to change DB impl in 5 min, just change url, driver and slick codec api).
 So if you want to upload you need to pass as argument flag "upload" at first.
 Also path name of row data and path to the file:
 
@@ -21,7 +21,7 @@ nameBasic       /home/user/data/name.basics.tsv
 
 So the full run command will be like:
 
-The more memory the better. In this case it takes about 25 minutes
+The more memory the better.
 sbt -J-Xmx9G -J-Xms7G "run upload titleRating /home/user/data/title.ratings.tsv titlePrincipal /home/user/data/title.principals.tsv titleBasic /home/user/data/title.basics.tsv nameBasic /home/user/data/name.basics.tsv;"
 
 ### In order to run project:
