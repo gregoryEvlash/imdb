@@ -19,8 +19,7 @@ object Dependencies {
     "io.circe" %% "circe-core" % "0.12.3",
     "io.circe" %% "circe-generic" % "0.12.3",
     "io.circe" %% "circe-parser" % "0.12.3",
-    "de.heikoseeberger" %% "akka-http-circe" % "1.30.0",
-    "io.circe" %% "circe-magnolia-derivation" % "0.4.0"
+    "de.heikoseeberger" %% "akka-http-circe" % "1.30.0"
   )
 
   val akka = Seq(
@@ -32,7 +31,6 @@ object Dependencies {
   )
 
   val database = Seq(
-//    "mysql" % "mysql-connector-java" % "8.0.18"
     "com.h2database" % "h2" % "1.4.200"
   )
 

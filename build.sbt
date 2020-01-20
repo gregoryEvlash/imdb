@@ -2,7 +2,7 @@ import com.imdb.Dependencies._
 
 lazy val root = (project in file("."))
   .settings(
-    inThisBuild(List(organization := "com.lunatech", scalaVersion := "2.12.9")),
+    inThisBuild(List(organization := "com.imdb", scalaVersion := "2.12.9")),
     name := "imdb",
     version := "0.0.1",
     libraryDependencies ++= all,
